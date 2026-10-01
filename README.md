@@ -65,43 +65,37 @@ excluded from Git.
 
 ## Architecture topology
 
-```mermaid
-flowchart TD
-    subgraph Browser["Browser (user)"]
-        SPA["SPA + MSAL.js<br/>(static HTML/JS)"]
-    end
+![Entra Agent ID from AWS AgentCore architecture](docs/architecture.svg)
 
-    subgraph Entra["Microsoft Entra ID"]
-        IDP["Token issuance<br/>OIDC / OAuth2"]
-        BP["Agent Identity Blueprint<br/>(AWS federated credential)"]
-        AID["Agent Identity<br/>(child of Blueprint)"]
-    end
-
-    subgraph AWS["AWS (eu-central-1)"]
-        AUTHZ["AgentCore Runtime<br/>Custom JWT Authorizer<br/>iss + aud + scp"]
-        AGENT["Agent container<br/>MSAL Python:<br/>Blueprint CCA -> FMI T1<br/>-> Agent CCA OBO TR"]
-        STS["AWS STS<br/>GetWebIdentityToken"]
-        subgraph EchoStack["Echo API (downstream)"]
-            EAUTHZ["API Gateway JWT Authorizer<br/>aud + iss(v2.0)"]
-            ELAMBDA["Echo Lambda"]
-        end
-    end
-
-    GRAPH["Microsoft Graph MCP<br/>(external, Entra-protected)"]
-
-    SPA -->|"1. Bearer Entra user token<br/>(scope agent.invoke)"| AUTHZ
-    AUTHZ -->|"validated request +<br/>forwarded Authorization header"| AGENT
-    AGENT -->|"AWS IAM role assertion"| STS
-    AGENT -->|"2. AWS assertion + incoming authorization token<br/>(FMI/OBO on behalf of the user)"| IDP
-    AGENT -->|"Bearer TR (Echo scope)"| EAUTHZ
-    EAUTHZ --> ELAMBDA
-    AGENT -->|"Bearer TR (MCP scope)"| GRAPH
-    SPA -.->|"sign in (PKCE)"| IDP
-    BP --- AID
-```
+The editable source is available at
+[`docs/architecture.excalidraw`](docs/architecture.excalidraw) and can be opened in
+[Microsoft's internal Excalidraw instance](https://aka.ms/excalidraw).
 
 The diagram reflects the **deployed** stack. The agent never receives a credential it can
 hand to the model — see [Security notes](#security-notes).
+
+### How to explain the architecture in an interview
+
+Start with the security goal: **an AI agent running in AWS must call Microsoft-protected
+APIs for a signed-in user, without storing a reusable Microsoft Entra client secret.**
+
+1. The browser SPA signs in the user with MSAL.js and PKCE, then obtains a user token
+   containing the `agent.invoke` delegated scope.
+2. The SPA sends that token to the AgentCore Runtime. AgentCore's built-in authorizer
+   validates its issuer, audience, and scope before the Python container can run.
+3. The container asks AWS STS for a short-lived signed assertion proving which IAM
+   execution role is running the workload.
+4. During **FMI**, Entra validates that AWS assertion against the federated credential
+   on the Agent Identity Blueprint and issues **T1**, which represents the child Agent
+   Identity.
+5. During **OBO**, the agent combines T1 with the incoming user token. Entra issues a
+   downstream token (**TR**) that represents both the agent and the delegated user.
+6. The agent sends a resource-specific TR to the Echo API or Microsoft Graph MCP. Each
+   resource validates its own audience and permissions independently.
+
+The shortest summary is: **the user token proves who the user is, the AWS assertion
+proves which workload is running, FMI identifies the agent, and OBO creates the final
+user-delegated token for the downstream API.**
 
 ---
 

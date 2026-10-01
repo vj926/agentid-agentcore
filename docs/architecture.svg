@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title desc">
+  <title id="title">Entra Agent ID from AWS AgentCore architecture</title>
+  <desc id="desc">A numbered flow showing a user in a browser invoking an AWS AgentCore agent that exchanges tokens with Microsoft Entra ID and calls protected downstream APIs on behalf of the user.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#0078D4"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5C2D91"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#107C10"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .title { font: 700 34px "Segoe UI", Arial, sans-serif; fill: #1e1e1e; }
+      .subtitle { font: 400 18px "Segoe UI", Arial, sans-serif; fill: #4f4f4f; }
+      .zone-title { font: 700 20px "Segoe UI", Arial, sans-serif; fill: #1e1e1e; }
+      .box-title { font: 700 18px "Segoe UI", Arial, sans-serif; fill: #1e1e1e; }
+      .box-text { font: 400 15px "Segoe UI", Arial, sans-serif; fill: #323130; }
+      .arrow-label { font: 600 14px "Segoe UI", Arial, sans-serif; fill: #1e1e1e; }
+      .step { font: 700 16px "Segoe UI", Arial, sans-serif; fill: #ffffff; text-anchor: middle; dominant-baseline: middle; }
+      .note { font: 600 16px "Segoe UI", Arial, sans-serif; fill: #323130; }
+      .small { font: 400 13px "Segoe UI", Arial, sans-serif; fill: #605e5c; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="980" fill="#ffffff"/>
+  <text x="60" y="58" class="title">Entra Agent ID from AWS AgentCore</text>
+  <text x="60" y="91" class="subtitle">Secretless workload identity + user delegation across Microsoft Entra ID and AWS</text>
+
+  <rect x="45" y="125" width="270" height="700" rx="18" fill="#F3F2F1" stroke="#605E5C" stroke-width="2"/>
+  <rect x="335" y="125" width="570" height="700" rx="18" fill="#FFF8E8" stroke="#F7630C" stroke-width="2"/>
+  <rect x="925" y="125" width="320" height="700" rx="18" fill="#F4ECFA" stroke="#5C2D91" stroke-width="2"/>
+  <rect x="1265" y="125" width="290" height="700" rx="18" fill="#EEF8ED" stroke="#107C10" stroke-width="2"/>
+
+  <text x="180" y="165" class="zone-title" text-anchor="middle">User / Browser</text>
+  <text x="620" y="165" class="zone-title" text-anchor="middle">AWS</text>
+  <text x="1085" y="165" class="zone-title" text-anchor="middle">Microsoft Entra ID</text>
+  <text x="1410" y="165" class="zone-title" text-anchor="middle">Protected Resources</text>
+
+  <g filter="url(#shadow)">
+    <rect x="75" y="225" width="210" height="145" rx="14" fill="#ffffff" stroke="#605E5C" stroke-width="2"/>
+    <text x="180" y="263" class="box-title" text-anchor="middle">Single-page app</text>
+    <text x="180" y="292" class="box-text" text-anchor="middle">MSAL.js signs in the user</text>
+    <text x="180" y="318" class="box-text" text-anchor="middle">and requests agent.invoke</text>
+    <text x="180" y="344" class="box-text" text-anchor="middle">using auth code + PKCE</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="375" y="215" width="230" height="165" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2"/>
+    <text x="490" y="250" class="box-title" text-anchor="middle">AgentCore front door</text>
+    <text x="490" y="280" class="box-text" text-anchor="middle">Built-in JWT authorizer</text>
+    <text x="490" y="306" class="box-text" text-anchor="middle">validates issuer, audience,</text>
+    <text x="490" y="332" class="box-text" text-anchor="middle">and agent.invoke scope</text>
+    <text x="490" y="358" class="small" text-anchor="middle">Rejects before agent code runs</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="655" y="215" width="210" height="165" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2"/>
+    <text x="760" y="250" class="box-title" text-anchor="middle">Agent container</text>
+    <text x="760" y="280" class="box-text" text-anchor="middle">Python + MSAL</text>
+    <text x="760" y="306" class="box-text" text-anchor="middle">receives the validated</text>
+    <text x="760" y="332" class="box-text" text-anchor="middle">user token and runs</text>
+    <text x="760" y="358" class="box-text" text-anchor="middle">FMI, then OBO</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="430" y="500" width="220" height="125" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2"/>
+    <text x="540" y="538" class="box-title" text-anchor="middle">AWS STS</text>
+    <text x="540" y="568" class="box-text" text-anchor="middle">Issues a short-lived</text>
+    <text x="540" y="594" class="box-text" text-anchor="middle">signed role assertion</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="965" y="215" width="240" height="165" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>
+    <text x="1085" y="250" class="box-title" text-anchor="middle">Entra token service</text>
+    <text x="1085" y="280" class="box-text" text-anchor="middle">Issues user token, T1,</text>
+    <text x="1085" y="306" class="box-text" text-anchor="middle">and downstream TR tokens</text>
+    <text x="1085" y="340" class="small" text-anchor="middle">OAuth 2.0 / OIDC</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="965" y="470" width="240" height="175" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>
+    <text x="1085" y="507" class="box-title" text-anchor="middle">Agent identity model</text>
+    <text x="1085" y="540" class="box-text" text-anchor="middle">Blueprint</text>
+    <text x="1085" y="566" class="small" text-anchor="middle">trusts the AWS role via FIC</text>
+    <path d="M1085 579 L1085 600" stroke="#5C2D91" stroke-width="2"/>
+    <text x="1085" y="625" class="box-text" text-anchor="middle">Child Agent Identity</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1300" y="225" width="220" height="145" rx="14" fill="#DFF6DD" stroke="#107C10" stroke-width="2"/>
+    <text x="1410" y="263" class="box-title" text-anchor="middle">Echo API</text>
+    <text x="1410" y="292" class="box-text" text-anchor="middle">API Gateway authorizer</text>
+    <text x="1410" y="318" class="box-text" text-anchor="middle">validates Echo audience</text>
+    <text x="1410" y="344" class="box-text" text-anchor="middle">then invokes Lambda</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1300" y="470" width="220" height="145" rx="14" fill="#DFF6DD" stroke="#107C10" stroke-width="2"/>
+    <text x="1410" y="508" class="box-title" text-anchor="middle">Microsoft Graph MCP</text>
+    <text x="1410" y="537" class="box-text" text-anchor="middle">Optional downstream tools</text>
+    <text x="1410" y="563" class="box-text" text-anchor="middle">using a separate</text>
+    <text x="1410" y="589" class="box-text" text-anchor="middle">resource-scoped token</text>
+  </g>
+
+  <path d="M285 275 C315 275 335 275 375 275" fill="none" stroke="#0078D4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <circle cx="330" cy="250" r="17" fill="#0078D4"/><text x="330" y="250" class="step">2</text>
+  <text x="330" y="310" class="arrow-label" text-anchor="middle">User JWT</text>
+  <text x="330" y="330" class="small" text-anchor="middle">aud: Blueprint</text>
+
+  <path d="M605 297 L655 297" fill="none" stroke="#F7630C" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <circle cx="630" cy="272" r="17" fill="#F7630C"/><text x="630" y="272" class="step">3</text>
+  <text x="630" y="330" class="small" text-anchor="middle">validated request</text>
+
+  <path d="M180 225 C180 190 850 185 965 250" fill="none" stroke="#0078D4" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arrow-blue)"/>
+  <circle cx="620" cy="187" r="17" fill="#0078D4"/><text x="620" y="187" class="step">1</text>
+  <text x="760" y="178" class="arrow-label" text-anchor="middle">Sign in + request agent.invoke</text>
+
+  <path d="M700 380 C650 430 600 460 555 500" fill="none" stroke="#F7630C" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <circle cx="635" cy="440" r="17" fill="#F7630C"/><text x="635" y="440" class="step">4</text>
+  <text x="530" y="435" class="arrow-label" text-anchor="middle">Request AWS assertion</text>
+
+  <path d="M650 562 C770 680 905 690 965 595" fill="none" stroke="#5C2D91" stroke-width="3" marker-end="url(#arrow-purple)"/>
+  <circle cx="805" cy="674" r="17" fill="#5C2D91"/><text x="805" y="674" class="step">5</text>
+  <text x="805" y="716" class="arrow-label" text-anchor="middle">FMI: assertion proves AWS role</text>
+  <text x="805" y="738" class="small" text-anchor="middle">Blueprint → child Agent Identity → T1</text>
+
+  <path d="M865 280 C900 280 925 280 965 280" fill="none" stroke="#5C2D91" stroke-width="3" marker-end="url(#arrow-purple)"/>
+  <circle cx="915" cy="255" r="17" fill="#5C2D91"/><text x="915" y="255" class="step">6</text>
+  <text x="915" y="405" class="arrow-label" text-anchor="middle">OBO exchange</text>
+  <text x="915" y="426" class="small" text-anchor="middle">T1 + user JWT</text>
+
+  <path d="M865 300 C1010 390 1160 390 1300 300" fill="none" stroke="#107C10" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <circle cx="1110" cy="375" r="17" fill="#107C10"/><text x="1110" y="375" class="step">7</text>
+  <text x="1215" y="405" class="arrow-label" text-anchor="middle">Call Echo with TR</text>
+  <text x="1215" y="425" class="small" text-anchor="middle">user + agent context</text>
+
+  <path d="M865 335 C1040 430 1140 520 1300 542" fill="none" stroke="#107C10" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arrow-green)"/>
+  <circle cx="1165" cy="485" r="17" fill="#107C10"/><text x="1165" y="485" class="step">8</text>
+  <text x="1130" y="448" class="arrow-label" text-anchor="middle">Optional MCP TR</text>
+
+  <rect x="170" y="855" width="1260" height="85" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2"/>
+  <text x="800" y="888" class="note" text-anchor="middle">Key security idea: AWS stores no reusable Entra client secret.</text>
+  <text x="800" y="916" class="box-text" text-anchor="middle">A short-lived AWS assertion proves the workload; OBO preserves the signed-in user for each downstream call.</text>
+</svg>

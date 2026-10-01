@@ -1,0 +1,61 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "github-copilot",
+  "elements": [
+    {"type":"text","id":"title","x":60,"y":30,"width":900,"height":70,"text":"Entra Agent ID from AWS AgentCore","fontSize":30,"fontFamily":2,"strokeColor":"#000000","textAlign":"left","verticalAlign":"top"},
+    {"type":"text","id":"subtitle","x":60,"y":82,"width":1100,"height":45,"text":"Secretless workload identity + user delegation across Entra ID and AWS","fontSize":17,"fontFamily":2,"strokeColor":"#000000","textAlign":"left","verticalAlign":"top"},
+
+    {"type":"rectangle","id":"browser-zone","x":40,"y":130,"width":260,"height":650,"strokeColor":"#495057","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"rectangle","id":"aws-zone","x":320,"y":130,"width":550,"height":650,"strokeColor":"#F7630C","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"rectangle","id":"entra-zone","x":890,"y":130,"width":310,"height":650,"strokeColor":"#5C2D91","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"rectangle","id":"resource-zone","x":1220,"y":130,"width":300,"height":650,"strokeColor":"#107C10","backgroundColor":"transparent","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+
+    {"type":"text","id":"browser-zone-label","x":85,"y":145,"width":170,"height":50,"text":"User / Browser","fontSize":20,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"text","id":"aws-zone-label","x":500,"y":145,"width":190,"height":50,"text":"AWS","fontSize":20,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"text","id":"entra-zone-label","x":945,"y":145,"width":200,"height":50,"text":"Microsoft Entra ID","fontSize":20,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"text","id":"resource-zone-label","x":1260,"y":145,"width":220,"height":50,"text":"Protected Resources","fontSize":20,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+
+    {"type":"rectangle","id":"spa","x":70,"y":230,"width":200,"height":140,"strokeColor":"#495057","backgroundColor":"#F3F2F1","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"spa-text","x":88,"y":250,"width":164,"height":100,"text":"Single-page app\n\nMSAL.js signs in user\nand requests agent.invoke","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"spa"},
+    {"type":"rectangle","id":"authorizer","x":360,"y":220,"width":220,"height":155,"strokeColor":"#F7630C","backgroundColor":"#FFF4CE","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"authorizer-text","x":380,"y":240,"width":180,"height":115,"text":"AgentCore front door\n\nBuilt-in JWT authorizer\nchecks iss + aud + scp","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"authorizer"},
+    {"type":"rectangle","id":"agent","x":620,"y":220,"width":210,"height":155,"strokeColor":"#F7630C","backgroundColor":"#FFF4CE","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"agent-text","x":640,"y":240,"width":170,"height":115,"text":"Agent container\n\nPython + MSAL\nruns FMI, then OBO","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"agent"},
+    {"type":"rectangle","id":"sts","x":430,"y":500,"width":210,"height":120,"strokeColor":"#F7630C","backgroundColor":"#FFF4CE","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"sts-text","x":450,"y":520,"width":170,"height":80,"text":"AWS STS\n\nShort-lived signed\nrole assertion","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"sts"},
+    {"type":"rectangle","id":"token-service","x":930,"y":220,"width":230,"height":155,"strokeColor":"#5C2D91","backgroundColor":"#E8DAEF","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"token-service-text","x":950,"y":240,"width":190,"height":115,"text":"Entra token service\n\nIssues user JWT, T1,\nand downstream TR","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"token-service"},
+    {"type":"rectangle","id":"identity-model","x":930,"y":480,"width":230,"height":150,"strokeColor":"#5C2D91","backgroundColor":"#E8DAEF","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"identity-model-text","x":950,"y":500,"width":190,"height":110,"text":"Agent identity model\n\nBlueprint + federated\ncredential\n↓\nChild Agent Identity","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"identity-model"},
+    {"type":"rectangle","id":"echo","x":1260,"y":230,"width":220,"height":140,"strokeColor":"#107C10","backgroundColor":"#DFF6DD","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"echo-text","x":1280,"y":250,"width":180,"height":100,"text":"Echo API\n\nJWT authorizer\nthen Lambda","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"echo"},
+    {"type":"rectangle","id":"mcp","x":1260,"y":480,"width":220,"height":140,"strokeColor":"#107C10","backgroundColor":"#DFF6DD","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"mcp-text","x":1280,"y":500,"width":180,"height":100,"text":"Microsoft Graph MCP\n\nOptional tools with a\nresource-scoped token","fontSize":16,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"mcp"},
+
+    {"type":"arrow","id":"signin","x":170,"y":230,"width":760,"height":-20,"strokeColor":"#0078D4","strokeWidth":3,"strokeStyle":"dashed","points":[[0,0],[300,-50],[760,-20]],"startBinding":{"elementId":"spa","focus":0,"gap":1},"endBinding":{"elementId":"token-service","focus":0,"gap":1}},
+    {"type":"text","id":"signin-label","x":480,"y":175,"width":230,"height":70,"text":"1  Sign in + request\nagent.invoke","fontSize":14,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"arrow","id":"a1","x":270,"y":280,"width":90,"height":0,"strokeColor":"#0078D4","strokeWidth":3,"points":[[0,0],[90,0]],"endBinding":{"elementId":"authorizer","focus":0,"gap":1}},
+    {"type":"text","id":"a1-label","x":282,"y":230,"width":90,"height":70,"text":"2\nUser JWT","fontSize":14,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"arrow","id":"a2","x":580,"y":295,"width":40,"height":0,"strokeColor":"#F7630C","strokeWidth":3,"points":[[0,0],[40,0]],"startBinding":{"elementId":"authorizer","focus":0,"gap":1},"endBinding":{"elementId":"agent","focus":0,"gap":1}},
+    {"type":"text","id":"a2-label","x":580,"y":245,"width":55,"height":70,"text":"3\nvalidated","fontSize":13,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"arrow","id":"a3","x":680,"y":375,"width":-110,"height":125,"strokeColor":"#F7630C","strokeWidth":3,"points":[[0,0],[-110,125]],"startBinding":{"elementId":"agent","focus":0,"gap":1},"endBinding":{"elementId":"sts","focus":0,"gap":1}},
+    {"type":"text","id":"a3-label","x":600,"y":420,"width":120,"height":70,"text":"4\nAWS assertion","fontSize":14,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"arrow","id":"a4","x":640,"y":560,"width":290,"height":0,"strokeColor":"#5C2D91","strokeWidth":3,"points":[[0,0],[290,0]],"startBinding":{"elementId":"sts","focus":0,"gap":1},"endBinding":{"elementId":"identity-model","focus":0,"gap":1}},
+    {"type":"text","id":"a4-label","x":715,"y":505,"width":150,"height":90,"text":"5\nFMI\nAWS role → T1","fontSize":14,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"arrow","id":"a5","x":830,"y":290,"width":100,"height":0,"strokeColor":"#5C2D91","strokeWidth":3,"points":[[0,0],[100,0]],"startBinding":{"elementId":"agent","focus":0,"gap":1},"endBinding":{"elementId":"token-service","focus":0,"gap":1}},
+    {"type":"text","id":"a5-label","x":835,"y":230,"width":100,"height":90,"text":"6\nOBO\nT1 + user JWT","fontSize":14,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"arrow","id":"a6","x":830,"y":300,"width":430,"height":20,"strokeColor":"#107C10","strokeWidth":3,"points":[[0,0],[240,100],[430,20]],"startBinding":{"elementId":"agent","focus":0,"gap":1},"endBinding":{"elementId":"echo","focus":0,"gap":1}},
+    {"type":"text","id":"a6-label","x":1080,"y":360,"width":150,"height":75,"text":"7\nCall Echo with TR","fontSize":14,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+    {"type":"arrow","id":"a7","x":830,"y":340,"width":430,"height":210,"strokeColor":"#107C10","strokeWidth":3,"points":[[0,0],[240,160],[430,210]],"startBinding":{"elementId":"agent","focus":0,"gap":1},"endBinding":{"elementId":"mcp","focus":0,"gap":1}},
+    {"type":"text","id":"a7-label","x":1080,"y":430,"width":120,"height":75,"text":"8\nOptional MCP TR","fontSize":14,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"top"},
+
+    {"type":"rectangle","id":"insight","x":190,"y":820,"width":1180,"height":90,"strokeColor":"#0078D4","backgroundColor":"#CFE4FA","fillStyle":"solid","strokeWidth":2,"roundness":{"type":3}},
+    {"type":"text","id":"insight-text","x":220,"y":837,"width":1120,"height":60,"text":"Key idea: AWS stores no reusable Entra secret. A short-lived AWS assertion proves the workload; OBO preserves the signed-in user for each downstream call.","fontSize":17,"fontFamily":2,"strokeColor":"#000000","textAlign":"center","verticalAlign":"middle","containerId":"insight"}
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": 20
+  },
+  "files": {}
+}
